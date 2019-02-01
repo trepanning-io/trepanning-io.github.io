@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="Docker != VM" />
+<meta property="og:description" content="Docker != Virtual Machine Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
+The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/posts/docker-aint-a-vm/" /><meta property="article:published_time" content="2019-02-01T16:10:55&#43;00:00"/>
+<meta property="article:modified_time" content="2019-02-01T16:10:46&#43;00:00"/>
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker != VM"/>
+<meta name="twitter:description" content="Docker != Virtual Machine Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
+The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine."/>
+<meta name="generator" content="Hugo 0.49" />
+
+
+    
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Docker != VM",
+  "url": "ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/posts/docker-aint-a-vm/",
+  "wordCount": "1555",
+  "datePublished": "2019-02-01T16:10:55&#43;00:00",
+  "dateModified": "2019-02-01T16:10:46&#43;00:00",
+  "author": {
+    "@type": "Person",
+    "name": "David Gethings"
+  }
+}
+</script>
+
+
+
+    <link rel="canonical" href="#ZgotmplZ">
+
+    <title>Docker != VM | Trepanning IO Blog Site</title>
+
+    <!-- combined, minified CSS -->
+    <link href="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/css/style.css" rel="stylesheet" integrity="sha384-6&#43;EGfPoOzk/n2DVJSlglKT8TV1TgIMvVcKI73IZgBswLasPBn94KommV6ilJqCXE" crossorigin="anonymous">
+
+    
+
+    
+
+    
+    <link href="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/css/cookieconsent.min.css" rel="stylesheet" type="text/css" integrity="sha384-6iYDyQZuuNT7DcPJGXx241czdv2&#43;GDGUcXRiqw1iXrjgYMTorSetxFP3JCMQMwnR" crossorigin="anonymous">
+<script src="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/js/cookieconsent.min.js" integrity="sha384-PDjg2ZdS3khPzd53i18&#43;7tzB32JVQfFMrTXYo21RqPgUmEVAPwIhxOUF/8sP79CS" crossorigin="anonymous" async></script>
+
+<script>
+window.addEventListener("load", function(){
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#428bca",
+        "text": "#ffffff"
+      },
+      "button": {
+        "background": "#f71559"
+      }
+    },
+    "content": {
+      "message": 'This website uses cookies.',
+      "dismiss": 'Got it!',
+      "link": 'Learn more.',
+      "href": "http:\/\/cookiesandyou.com"
+    },
+    "position": "bottom-right"
+  })});
+</script>
+
+    
+
+    
+
+  </head>
+
+  <body>
+
+    
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="nav blog-nav">
+          <a class="nav-link " href="#ZgotmplZ">Home</a>
+        </nav>
+      </div>
+    </div>
+    
+
+    
+    
+    <header class="blog-header">
+      <div class="container">
+        <h1 class="blog-title"><a href="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/" rel="home">Trepanning IO Blog Site</a></h1>
+        <p class="lead blog-description">A blog covering NRE and Network Infrastructure as Code</p>
+      </div>
+    </header>
+    
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 blog-main">
+
+          
+
+
+<article class="blog-post">
+  <header>
+    <h2 class="blog-post-title"><a href="#ZgotmplZ">Docker != VM</a></h2>
+    <p class="blog-post-meta"><time datetime="2019-02-01T16:10:55Z">Fri Feb 01, 2019</time> by David Gethings</p>
+  </header>
+  
+
+<h1 id="docker-virtual-machine">Docker != Virtual Machine</h1>
+
+<p>Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.</p>
+
+<p>The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine. Docker separates only the file system, networking stack and uses a thing called cgroups to isolate the process(es) from the host machine. With Docker both the container and the host use the same kernel.</p>
+
+<p>You are welcome to clone/fork and play with the <a href="https://github.com/trepanning-oi/docker-aint-a-vm">code examples</a> as you see fit. Some people (myself included) learn best by playing with things themselves.</p>
+
+<p>Contained in the repo are multiple containers that all implement the classic &ldquo;Hello World!&rdquo; program. It&rsquo;s so classic even Docker uses it as the validation step to prove Docker has installed correctly.</p>
+
+<p>Each container implements the &ldquo;Hello World!&rdquo; program in a different language, or a different version of a language. By looking at the differences of each container I&rsquo;ll explain what a container is and clear up the confusion.</p>
+
+<p>Let&rsquo;s begin by seeing what these containers do. This isn&rsquo;t a primer for Docker, so I&rsquo;m not going to explain how to install or use it. By using <code>docker-compose</code> we can run all the containers in parallel and get the following output:</p>
+
+<pre><code class="language-bash">$ docker-compose up
+...
+Attaching to golang-1.10, node, golang-1.10-stripped, python3, python2, nasm, bash
+golang-1.10             | Hello world!
+node                    | Hello World!
+golang-1.10 exited with code 0
+golang-1.10-stripped    | Hello world!
+python3                 | Hello world!
+python2                 | Hello world!
+node exited with code 0
+golang-1.10-stripped exited with code 0
+python3 exited with code 0
+nasm                    | Hello world!
+bash                    | Hello world!
+python2 exited with code 0
+nasm exited with code 1
+bash exited with code 0
+</code></pre>
+
+<p>What we see from each container is two things, that it prints &ldquo;Hello World!&rdquo; and the exit code for that container. Eagle-eyes readers will note that <code>nasm</code> is the only one with an exit code of 1, I&rsquo;ll explain that later.</p>
+
+<p>There are 7 implementations of the &ldquo;Hello World!&rdquo; program written in Python2, Python3, Golang 1.10, Node, Bash and ASM (aka <code>nasm</code> which is assembler). They are all literally or effectively one line programs and <strong>only</strong> print the string &ldquo;Hello World!&rdquo;. The only thing each container uses is 12 bytes for the string and however many bytes for the print instruction.</p>
+
+<h2 id="docker-image-sizes">Docker Image Sizes</h2>
+
+<p>Let&rsquo;s take a look at the size of each docker image.</p>
+
+<pre><code class="language-bash">$ docker images | grep size
+size/node           9.11                5ca049eb2135        15 minutes ago      68.5MB
+size/asm            2.10                52cb0ac37af4        15 minutes ago      356B
+size/golang         1.10-stripped       8df3b4dc0dc4        15 minutes ago      758kB
+size/golang         1.10                7c293b9dbccf        15 minutes ago      1.26MB
+size/python         3                   d4019d0cdd0a        15 minutes ago      81.3MB
+size/python         2                   bca1a2cfd9fe        15 minutes ago      58.2MB
+size/bash           alpine3.7           76e2115e34dc        15 minutes ago      4.21MB
+</code></pre>
+
+<p>The last column shows the size of each docker image and there is quite a range. The smallest is 356B, the largest is 81.3MB! Why such a big range?</p>
+
+<p>It&rsquo;s the programming language runtime and it&rsquo;s dependencies. For each programming language there is code automatically added to the code your wrote to make your code run, that&rsquo;s called the runtime. That runtime needs certain things from the operating system to run, so those need to be included too.</p>
+
+<p>Remember, all that is happening is we are printing a 12 byte string. OK, you can add a byte or 2 for the line feed (and/or carrage return). Add in the print instruction and the total size is a 10s of bytes. Maybe a 100 bytes. Why are these containers so big?</p>
+
+<p>Lets look at each programming language to see what is being included.</p>
+
+<h3 id="python">Python</h3>
+
+<p>Remember that each container has a separate file system from it&rsquo;s host. That literally means there are two copies of <code>/etc</code>, <code>/usr</code>, <code>/var</code>, and so on, one for the host and one for the container. Now, the container doesn&rsquo;t have to contain <strong>any</strong> files or directories. But it must contain the ones it depends on.</p>
+
+<p>Python depends on a lot. For all practical purposes it depends on a full OS. It certainly depends on a lot of system libraries. Python 3 and Python 2 rank #1 &amp; #3 for the biggest containers. A possible reason for this is that the container is based on a &ldquo;full&rdquo; OS. You can use <code>docker run --rm -it size/python:2 bash -l</code> to take a look at what files are in this container. The OS this image is based on is Alpine 3.7. How big is that image?</p>
+
+<pre><code class="language-bash">$ docker images alpine:3.7
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+alpine              3.7                 bc8fb6e6e49d        31 hours ago        4.21MB
+</code></pre>
+
+<p>So Alpine is just over 4MB. Where does the other 54MB (Python2) and 77MB (Python3) come from? That is the Python runtime.</p>
+
+<p>To be fair Python does describe itself as a &ldquo;batteries included&rdquo; programming language. And it is a syntactically light and very flexible programming language. Python does a lot of heavy lifting for the programmer and the runtime is the muscle that does that lifting. Python sure has some big muscles. :muscle:</p>
+
+<h3 id="node">Node</h3>
+
+<p>Node takes the #2 spot in our Docker image size leader board. Like Python, the Node container is based on Alpine 3.7. And like Python the vast majority of the image size is the Node runtime.</p>
+
+<p>Node, like Python, does a lot for the programmer and does so using Javascript! If you use Chrome (or any modern browser) you might be amazed Node does so much with so little! :dizzy_face:</p>
+
+<h3 id="bash">Bash</h3>
+
+<p>Compared to the previous scripting languages Bash is tiny. It&rsquo;s no bigger than the Alpine image it is based on. But it&rsquo;s hardly a fair comparison to Python and Node. To do much more with Bash would require installing additional applications and using Bash to interact with their CLI.</p>
+
+<h3 id="golang">Golang</h3>
+
+<p>This is the first of the compiled languages. It&rsquo;s the first language to leave the MB territory and enter the KB. But to do that there are a few tricks.</p>
+
+<p>Docker isolates one or more processes from the rest of the host, making only the kernel - and only some of it system calls - available. Because Golang is compiled we can drastically reduce the dependencies using a multi-stage Docker files. This means using one &ldquo;fat&rdquo; container to build the executable and then copy that exectuable into an empty container.</p>
+
+<p>But wait, if all Golang is doing is printing a string to the screen, and that should take 100 bytes or so, why are the Golang containers 1.2MB and 750KB?</p>
+
+<p>Once again, it is our old friend the runtime. While Golang does not do &ldquo;as much&rdquo; for the programmer as Python or Node, it still does a lot. Those Go routines don&rsquo;t run in thin air! The stripped version of the container is using certain compiler flags to remove unnecessary code.</p>
+
+<h3 id="assembler">Assembler</h3>
+
+<p>And finally the winner for the smallest Docker image. 300B almost 1000x smaller than the next smallest. Like the Golang images, this image is built using a multi-stage Dockerfile so that only the executable goes into the final image. Because it is assembler the programmer has to do <strong>everything</strong>. On the flip side that means our container has almost nothing more than the instruction to print and the 12(-ish) bytes to print.</p>
+
+<p>Now to explain that exit code. There are 3 things you need to know.</p>
+
+<ol>
+<li>I am not a software developer by trade (although I can code in multiple languages with the help of Stack Overflow :trollface:)</li>
+<li>The last time I wrote any assembler was back in University, over 20 years ago :scream:</li>
+<li>I had no idea what I was doing in assembler then and still have no idea now!</li>
+</ol>
+
+<p>It is for these reasons that the <code>nasm</code> container exits with a code of 1. It should not, but I have no idea how to fix it. Fortunatly it&rsquo;s does not matter.</p>
+
+<h2 id="what-does-this-all-mean-and-why-should-you-care">What does this all mean and why should you care</h2>
+
+<p>By looking at different programming languages we have learned that a container does not need to contain anything but the exact code it needs to operate. It needs no files (other than the executable), directories or anything else supporting it. Depending on the programming language you maybe forced to included an OS (everything but a kernel). Scripting languages like Python and Node can suffer from needing to &ldquo;download half the Internet&rdquo; before they can do anything useful.</p>
+
+<p>The programming language you choose can have a massive impact on your containerized infrastructure. A system based on images that are MB will always be cheaper and more responsive than a system based on images that are GB. Storage maybe cheap, but would you rather be waiting to download a 1GB image or a 1MB image before your service is online?</p>
+
+<p>To be clear. I am not advocating you must use a compiled language to get the &ldquo;full benefit&rdquo; of a container. Node and Python have their place, just as Golang does. And there are techniques you can use in the Dockerfile to minimise total image storage (and transfer). But if your containers are so big you can&rsquo;t tell the difference from a VM are you sure you&rsquo;re using the right technology?</p>
+
+
+  
+
+  
+  <hr>
+  <footer>
+
+  
+    <section>
+    <h4>Share</h4>
+    <nav class="nav sharing-icons">
+      <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=ec2-18-218-47-40.us-east-2.compute.amazonaws.com%3a1313%2fposts%2fdocker-aint-a-vm%2f" title="Share on Facebook"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+      <a class="nav-item" href="https://plus.google.com/share?url=ec2-18-218-47-40.us-east-2.compute.amazonaws.com%3a1313%2fposts%2fdocker-aint-a-vm%2f" title="Share on Google+"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+      <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=ec2-18-218-47-40.us-east-2.compute.amazonaws.com%3a1313%2fposts%2fdocker-aint-a-vm%2f" title="Share on LinkedIn"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+      <a class="nav-item" href="https://twitter.com/home?status=ec2-18-218-47-40.us-east-2.compute.amazonaws.com%3a1313%2fposts%2fdocker-aint-a-vm%2f" title="Tweet this"><span class="fa fa-twitter fa-2x"></span></a>
+    </nav>
+  </section>
+
+  
+
+  
+  </footer>
+  
+
+</article> 
+
+
+
+        </div> <!-- /.blog-main -->
+
+        <aside class="col-sm-3 ml-auto blog-sidebar">
+  
+
+  
+
+  
+</aside>
+
+
+      </div> <!-- /.row -->
+    </div> <!-- /.container -->
+    
+
+    
+    <footer class="blog-footer">
+      <p>
+      
+      Blog template created by <a href="https://twitter.com/mdo">@mdo</a>, ported to Hugo by <a href='https://twitter.com/mralanorth'>@mralanorth</a>.
+      
+      </p>
+      <p>
+      <a href="#">Back to top</a>
+      </p>
+    </footer>
+    
+
+  </body>
+
+</html>
