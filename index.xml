@@ -17,7 +17,7 @@
       <pubDate>Fri, 01 Feb 2019 16:10:55 +0000</pubDate>
       
       <guid>https://trepanning-io.github.io/posts/docker-aint-a-vm/</guid>
-      <description>Docker != Virtual Machine Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
+      <description>Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
 The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine.</description>
     </item>
     
