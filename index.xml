@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Trepanning IO Blog Site</title>
-    <link>ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/</link>
+    <link>https://trepanning-io.github.io/</link>
     <description>Recent content on Trepanning IO Blog Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <lastBuildDate>Fri, 01 Feb 2019 16:10:55 +0000</lastBuildDate>
     
-	<atom:link href="ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://trepanning-io.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Docker != VM</title>
-      <link>ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/posts/docker-aint-a-vm/</link>
+      <link>https://trepanning-io.github.io/posts/docker-aint-a-vm/</link>
       <pubDate>Fri, 01 Feb 2019 16:10:55 +0000</pubDate>
       
-      <guid>ec2-18-218-47-40.us-east-2.compute.amazonaws.com:1313/posts/docker-aint-a-vm/</guid>
+      <guid>https://trepanning-io.github.io/posts/docker-aint-a-vm/</guid>
       <description>Docker != Virtual Machine Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
 The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine.</description>
     </item>
