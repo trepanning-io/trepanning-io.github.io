@@ -1,123 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html>
   <head>
-    <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<meta property="og:title" content="Docker != VM" />
-<meta property="og:description" content="Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
-The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://trepanning-io.github.io/posts/docker-aint-a-vm/" /><meta property="article:published_time" content="2019-02-01T16:10:55&#43;00:00"/>
-<meta property="article:modified_time" content="2019-02-01T16:55:45&#43;00:00"/>
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Docker != VM"/>
-<meta name="twitter:description" content="Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.
-The aim of this repo is to help clarify the difference. In a nutshell, the difference is a VM seperates the kernel, file system and networking stack from the host machine."/>
-<meta name="generator" content="Hugo 0.49" />
-
-
-    
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Docker != VM",
-  "url": "https://trepanning-io.github.io/posts/docker-aint-a-vm/",
-  "wordCount": "1551",
-  "datePublished": "2019-02-01T16:10:55&#43;00:00",
-  "dateModified": "2019-02-01T16:55:45&#43;00:00",
-  "author": {
-    "@type": "Person",
-    "name": "David Gethings"
-  }
-}
-</script>
-
-
-
-    <link rel="canonical" href="https://trepanning-io.github.io/posts/docker-aint-a-vm/">
-
-    <title>Docker != VM | Trepanning IO Blog Site</title>
-
-    <!-- combined, minified CSS -->
-    <link href="https://trepanning-io.github.io/css/style.css" rel="stylesheet" integrity="sha384-6&#43;EGfPoOzk/n2DVJSlglKT8TV1TgIMvVcKI73IZgBswLasPBn94KommV6ilJqCXE" crossorigin="anonymous">
-
-    
-
-    
-
-    
-    <link href="https://trepanning-io.github.io/css/cookieconsent.min.css" rel="stylesheet" type="text/css" integrity="sha384-6iYDyQZuuNT7DcPJGXx241czdv2&#43;GDGUcXRiqw1iXrjgYMTorSetxFP3JCMQMwnR" crossorigin="anonymous">
-<script src="https://trepanning-io.github.io/js/cookieconsent.min.js" integrity="sha384-PDjg2ZdS3khPzd53i18&#43;7tzB32JVQfFMrTXYo21RqPgUmEVAPwIhxOUF/8sP79CS" crossorigin="anonymous" async></script>
-
-<script>
-window.addEventListener("load", function(){
-  window.cookieconsent.initialise({
-    "palette": {
-      "popup": {
-        "background": "#428bca",
-        "text": "#ffffff"
-      },
-      "button": {
-        "background": "#f71559"
-      }
-    },
-    "content": {
-      "message": 'This website uses cookies.',
-      "dismiss": 'Got it!',
-      "link": 'Learn more.',
-      "href": "http:\/\/cookiesandyou.com"
-    },
-    "position": "bottom-right"
-  })});
-</script>
-
-    
-
-    
-
+    <title>Docker != VM // Trepanning IO Blog Site</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.49" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="David Gethings" />
+    <meta name="description" content="" />
+    <base href="https://trepanning-io.github.io/" />
+    <link rel="stylesheet" href="https://trepanning-io.github.io/css/main.min.89370bfdd636611d7283523dbb885b5a6137cf1749d5503e069b06f5cc55f5bb.css" />
   </head>
-
   <body>
-
-    
-    <div class="blog-masthead">
-      <div class="container">
-        <nav class="nav blog-nav">
-          <a class="nav-link " href="https://trepanning-io.github.io/">Home</a>
-        </nav>
-      </div>
-    </div>
-    
-
-    
-    
-    <header class="blog-header">
-      <div class="container">
-        <h1 class="blog-title"><a href="https://trepanning-io.github.io/" rel="home">Trepanning IO Blog Site</a></h1>
-        <p class="lead blog-description">A blog covering NRE and Network Infrastructure as Code</p>
+    <header class="app-header">
+      <a href="/"><img class="app-header-avatar" src="./avatar.jpg" /></a>
+      <h1>Trepanning IO Blog Site</h1>
+      <p>A blog covering NRE, Network Infrastructure as Code and modern networking for Cloud computing</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/trepanning-io/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+        
       </div>
     </header>
-    
-    
-
-    
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 blog-main">
-
-          
-
-
-<article class="blog-post">
-  <header>
-    <h2 class="blog-post-title"><a href="https://trepanning-io.github.io/posts/docker-aint-a-vm/">Docker != VM</a></h2>
-    <p class="blog-post-meta"><time datetime="2019-02-01T16:10:55Z">Fri Feb 01, 2019</time> by David Gethings</p>
-  </header>
-  
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Docker != VM</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Feb 1, 2019
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          8 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
 
 <p>Despite the growing use of containers over recent years there is still some confusion as to the difference between a container and a virtual machine. Most people understand they are both virtualization technologies but are a little hazy on the differences.</p>
 
@@ -189,13 +109,13 @@ alpine              3.7                 bc8fb6e6e49d        31 hours ago        
 
 <p>So Alpine is just over 4MB. Where does the other 54MB (Python2) and 77MB (Python3) come from? That is the Python runtime.</p>
 
-<p>To be fair Python does describe itself as a &ldquo;batteries included&rdquo; programming language. And it is a syntactically light and very flexible programming language. Python does a lot of heavy lifting for the programmer and the runtime is the muscle that does that lifting. Python sure has some big muscles. :muscle:</p>
+<p>To be fair Python does describe itself as a &ldquo;batteries included&rdquo; programming language. And it is a syntactically light and very flexible programming language. Python does a lot of heavy lifting for the programmer and the runtime is the muscle that does that lifting. Python sure has some big muscles. 💪</p>
 
 <h3 id="node">Node</h3>
 
 <p>Node takes the #2 spot in our Docker image size leader board. Like Python, the Node container is based on Alpine 3.7. And like Python the vast majority of the image size is the Node runtime.</p>
 
-<p>Node, like Python, does a lot for the programmer and does so using Javascript! If you use Chrome (or any modern browser) you might be amazed Node does so much with so little! :dizzy_face:</p>
+<p>Node, like Python, does a lot for the programmer and does so using Javascript! If you use Chrome (or any modern browser) you might be amazed Node does so much with so little! 😵</p>
 
 <h3 id="bash">Bash</h3>
 
@@ -218,8 +138,8 @@ alpine              3.7                 bc8fb6e6e49d        31 hours ago        
 <p>Now to explain that exit code. There are 3 things you need to know.</p>
 
 <ol>
-<li>I am not a software developer by trade (although I can code in multiple languages with the help of Stack Overflow :trollface:)</li>
-<li>The last time I wrote any assembler was back in University, over 20 years ago :scream:</li>
+<li>I am not a software developer by trade (although I can code in multiple languages with the help of Stack Overflow )</li>
+<li>The last time I wrote any assembler was back in University, over 20 years ago 😱</li>
 <li>I had no idea what I was doing in assembler then and still have no idea now!</li>
 </ol>
 
@@ -233,62 +153,9 @@ alpine              3.7                 bc8fb6e6e49d        31 hours ago        
 
 <p>To be clear. I am not advocating you must use a compiled language to get the &ldquo;full benefit&rdquo; of a container. Node and Python have their place, just as Golang does. And there are techniques you can use in the Dockerfile to minimise total image storage (and transfer). But if your containers are so big you can&rsquo;t tell the difference from a VM are you sure you&rsquo;re using the right technology?</p>
 
+    </div>
+  </article>
 
-  
-
-  
-  <hr>
-  <footer>
-
-  
-    <section>
-    <h4>Share</h4>
-    <nav class="nav sharing-icons">
-      <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2ftrepanning-io.github.io%2fposts%2fdocker-aint-a-vm%2f" title="Share on Facebook"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
-      <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2ftrepanning-io.github.io%2fposts%2fdocker-aint-a-vm%2f" title="Share on Google+"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
-      <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2ftrepanning-io.github.io%2fposts%2fdocker-aint-a-vm%2f" title="Share on LinkedIn"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
-      <a class="nav-item" href="https://twitter.com/home?status=https%3a%2f%2ftrepanning-io.github.io%2fposts%2fdocker-aint-a-vm%2f" title="Tweet this"><span class="fa fa-twitter fa-2x"></span></a>
-    </nav>
-  </section>
-
-  
-
-  
-  </footer>
-  
-
-</article> 
-
-
-
-        </div> <!-- /.blog-main -->
-
-        <aside class="col-sm-3 ml-auto blog-sidebar">
-  
-
-  
-
-  
-</aside>
-
-
-      </div> <!-- /.row -->
-    </div> <!-- /.container -->
-    
-
-    
-    <footer class="blog-footer">
-      <p>
-      
-      Blog template created by <a href="https://twitter.com/mdo">@mdo</a>, ported to Hugo by <a href='https://twitter.com/mralanorth'>@mralanorth</a>.
-      
-      </p>
-      <p>
-      <a href="#">Back to top</a>
-      </p>
-    </footer>
-    
-
+    </main>
   </body>
-
 </html>
